@@ -5,6 +5,9 @@ const placesRoutes = require('./routes/places-routes');
 
 const app = express();
 
+app.use(bodyParser.json());
+// Above finds json data with the http request body and converts to JS before moving onto the next middleware
+
 app.use('/api/places', placesRoutes);
 
 app.use((error, req, res, next) => {
