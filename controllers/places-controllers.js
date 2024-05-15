@@ -65,9 +65,9 @@ const createPlace = (req, res, next) => {
   creator
  };
 
- DUMMY_PLACES.push(createdPlace);
+  DUMMY_PLACES.push(createdPlace);
 
- res.status(201).json({place: createdPlace});
+  res.status(201).json({place: createdPlace});
 };
 
 const patchPlace = (req, res, next) => {
