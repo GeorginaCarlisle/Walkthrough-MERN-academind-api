@@ -37,7 +37,7 @@ const createUser = async (req, res, next) => {
     );
   }
 
-  const { name, email, password, places } = req.body;
+  const { name, email, password } = req.body;
 
   let exisitingUser;
   try {
@@ -63,7 +63,7 @@ const createUser = async (req, res, next) => {
     email,
     image: 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fblog.depositphotos.com%2F7-types-of-abstract-art-for-inspiring-designs.html&psig=AOvVaw0WCD7SoxWhS60ZRpEdo0GH&ust=1718359087488000&source=images&cd=vfe&opi=89978449&ved=0CBUQjRxqFwoTCKDxgsyo2IYDFQAAAAAdAAAAABAE',
     password,
-    places,
+    places: []
   });
   
   try {
