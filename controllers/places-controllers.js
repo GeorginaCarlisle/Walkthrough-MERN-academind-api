@@ -7,32 +7,6 @@ const getCoordsForAddress = require('../util/location');
 const Place = require('../models/place');
 const User = require('../models/user');
 
-let DUMMY_PLACES = [
-  {
-    id: 'p1',
-    title: 'Empire State Building',
-    description: 'One of the most famous sky scrapers in the world!',
-    imageUrl: 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FEmpire_State_Building&psig=AOvVaw03iqQl8OXsV-RmoR8XspC8&ust=1715171618438000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCMjzxqzG-4UDFQAAAAAdAAAAABAE',
-    address: '20 W 34th St., New York, NY 10001, United States',
-    location: {
-      lat: 40.7484445,
-      lng: -73.9882447
-    },
-    creator: 'u1'
-  },
-  {
-    id: 'p2',
-    title: 'Empire State Building',
-    description: 'One of the most famous sky scrapers in the world!',
-    imageUrl: 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FEmpire_State_Building&psig=AOvVaw03iqQl8OXsV-RmoR8XspC8&ust=1715171618438000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCMjzxqzG-4UDFQAAAAAdAAAAABAE',
-    address: '20 W 34th St., New York, NY 10001, United States',
-    location: {
-      lat: 40.7484445,
-      lng: -73.9882447
-    },
-    creator: 'u2'
-  }
-];
 
 const getPlaceById = async (req, res, next) => {
   const placeId = req.params.pid;
@@ -53,6 +27,9 @@ const getPlaceById = async (req, res, next) => {
 
 const getPlacesByUserId = async (req, res, next) => {
   const userId = req.params.uid;
+  // Two different logic options shown below. 2nd option utilises populate
+
+  /*
   let places;
   try {
     places = await Place.find({ creator: userId });
@@ -67,6 +44,22 @@ const getPlacesByUserId = async (req, res, next) => {
     );
   }
   res.json({place: places.map(place => place.toObject({ getters: true}))});
+  */
+
+  let userWithPlaces;
+  try {
+    userWithPlaces = await User.findById(userId).populate('places');
+  } catch(err) {
+    const error = new HttpError('Something went wrong, please try again later', 500);
+    return next(error);
+  }
+
+  if (!userWithPlaces || userWithPlaces.length === 0) {
+    return next(
+      new HttpError('Could not find any places for the provided user id.', 404)
+    );
+  }
+  res.json({places: userWithPlaces.places.map(place => place.toObject({ getters: true}))});
 };
 
 const createPlace = async (req, res, next) => {
