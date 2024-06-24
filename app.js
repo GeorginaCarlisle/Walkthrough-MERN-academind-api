@@ -15,6 +15,17 @@ const app = express();
 app.use(bodyParser.json());
 // Above finds json data with the http request body and converts to JS before moving onto the next middleware
 
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader(
+    'Access-Control-Allow-Headers',
+    'Origin, X-Requested-With, Content-Type, Accept, Authorization'
+  );
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE');
+  next();
+});
+// Above sets the headers for all responses sent back to the frontend, allowing the client to access the resources.
+
 app.use('/api/places', placesRoutes);
 app.use('/api/users', usersRoutes);
 
