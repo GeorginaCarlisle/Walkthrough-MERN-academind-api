@@ -53,7 +53,7 @@ const createUser = async (req, res, next) => {
   const createdUser = new User({
     name,
     email,
-    image: 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fblog.depositphotos.com%2F7-types-of-abstract-art-for-inspiring-designs.html&psig=AOvVaw0WCD7SoxWhS60ZRpEdo0GH&ust=1718359087488000&source=images&cd=vfe&opi=89978449&ved=0CBUQjRxqFwoTCKDxgsyo2IYDFQAAAAAdAAAAABAE',
+    image: req.file.path,
     password,
     places: []
   });
