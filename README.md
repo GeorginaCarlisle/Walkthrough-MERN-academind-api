@@ -13,3 +13,5 @@ REST API for walkthrough project as part of the MERN course by Academind.
 - mongoose
 - mongoose-unique-validator
 - multer (node.js middleware for handling multipart/form-data)
+- bcryptjs
+- jsonwebtoken
